@@ -7,6 +7,7 @@
 #include "BTNode.h"
 #include <stddef.h>
 #include <stdexcept>
+#include <string>
 
 template<typename Item_Type>
 class Binary_Tree {
@@ -36,6 +37,9 @@ public:
     std::string root_to_string() const {
         return root->to_string();
     }
+
+
+
 protected:
     Binary_Tree(BTNode<Item_Type>* new_root) : root(new_root) {}
     BTNode<Item_Type>* root;
@@ -88,6 +92,24 @@ std::string Binary_Tree<Item_Type>::to_string() const {
         oss << get_right_subtree().to_string();
     }
     return oss.str();
+}
+
+template<typename Item_Type>
+Binary_Tree<Item_Type> Binary_Tree<Item_Type>::read_binary_tree(std::istream &in) {
+    std::string next_line;
+    getline(in, next_line);
+    if (next_line == "NULL") {
+        return Binary_Tree<Item_Type>();
+    }
+    else {
+        Item_Type the_data;
+        std::istringstream ins(next_line);
+        ins >> the_data;
+        Binary_Tree<Item_Type> left = read_binary_tree(in);
+        Binary_Tree<Item_Type> right = read_binary_tree(in);
+        return Binary_Tree<Item_Type>(the_data, left, right);
+    }
+
 }
 
 template<typename Item_Type>
